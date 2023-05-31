@@ -113,5 +113,3 @@ usoLasTresPrimerasGemas guantelete = (utilizar . take 3 . gemas) guantelete
 
 -- 2) usoLasTresPrimerasGemas guanteleteDeLocos punisher -- Si se puede ejecutar ya que, aunque el guantelete tenga gemas infinitas,
 -- si se pueden agarrar las 3 primeras gemas y aplicarcelas a punisher
-
--- RG014457144CN
