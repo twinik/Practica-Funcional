@@ -31,10 +31,10 @@ turbo :: Poder
 turbo = modificarAtaque (+25) 
 
 reparacionEmergencia :: Poder
-reparacionEmergencia = modificarDurabilidad (+50) . modificarAtaque (-30)
+reparacionEmergencia = modificarDurabilidad (+50) . modificarAtaque ((-)30)
 
 superTurbo :: Poder
-superTurbo = turbo . turbo . turbo . modificarDurabilidad (-45)
+superTurbo = turbo . turbo . turbo . modificarDurabilidad ((-)45)
 
 velocidadLuz :: Poder
 velocidadLuz = modificarAtaque (+2500) . modificarDurabilidad (*2) . modificarEscudo (+1500)
@@ -53,3 +53,35 @@ modificarEscudo funcion unaNave = unaNave {escudo = funcion . escudo $ unaNave}
 --modificar :: a -> (Int -> Int) -> Nave -> Nave
 --modificar dato funcion unaNave = unaNave {dato = funcion . dato $ unaNave}
 
+------------
+---Punto2---
+------------
+
+type Flota = [Nave]
+
+durabilidadTotal :: Flota -> Int
+durabilidadTotal = sum . map durabilidad
+
+------------
+---Punto3---
+------------
+
+saberComoQuedaNaveAtacada :: Nave -> Nave -> Nave
+saberComoQuedaNaveAtacada naveAtacante naveAtacada
+    | danioRecibido naveAtacada naveAtacante <= durabilidad naveAtacada = modificarDurabilidad ((-) (danioRecibido naveAtacada naveAtacante)) naveAtacada
+    | otherwise = modificarDurabilidad ((-) durabilidad naveAtacada) naveAtacada
+
+danioRecibido :: Nave -> Nave -> Int
+danioRecibido naveAtacante naveAtacada
+    | calculoDanio naveAtacante naveAtacada > 0 = calculoDanio naveAtacante naveAtacada
+    | otherwise = 0
+
+calculoDanio :: Nave -> Nave -> Int
+calculoDanio naveAtacante naveAtacada = ataque . activarPoder $ naveAtacante - escudo . activarPoder $ naveAtacada
+
+activarPoder :: Nave -> Nave
+activarPoder = poderEspecial unaNave
+
+------------
+---Punto4---
+------------
