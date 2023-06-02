@@ -27,6 +27,7 @@ library
   exposed-modules:
       Heroes
       Minigolfito
+      StarWars
       Thanos
   other-modules:
       Paths_PracticasParcialesFuncional
