@@ -69,7 +69,7 @@ durabilidadTotal = sum . map durabilidad
 saberComoQuedaNaveAtacada :: Nave -> Nave -> Nave
 saberComoQuedaNaveAtacada naveAtacante naveAtacada
     | danioRecibido naveAtacada naveAtacante <= durabilidad naveAtacada = modificarDurabilidad ((-) (danioRecibido naveAtacada naveAtacante)) naveAtacada
-    | otherwise = modificarDurabilidad ((-) durabilidad naveAtacada) naveAtacada
+    | otherwise = modificarDurabilidad ((-) (durabilidad naveAtacada)) naveAtacada
 
 danioRecibido :: Nave -> Nave -> Int
 danioRecibido naveAtacante naveAtacada
@@ -77,10 +77,10 @@ danioRecibido naveAtacante naveAtacada
     | otherwise = 0
 
 calculoDanio :: Nave -> Nave -> Int
-calculoDanio naveAtacante naveAtacada = ataque . activarPoder $ naveAtacante - escudo . activarPoder $ naveAtacada
+calculoDanio naveAtacante naveAtacada = ataque (activarPoder naveAtacante) - escudo (activarPoder naveAtacada)
 
 activarPoder :: Nave -> Nave
-activarPoder = poderEspecial unaNave
+activarPoder unaNave = (poderEspecial unaNave) unaNave
 
 ------------
 ---Punto4---
