@@ -67,7 +67,7 @@ durabilidadTotal = sum . map durabilidad
 ------------
 
 saberComoQuedaNaveAtacada :: Nave -> Nave -> Nave
-saberComoQuedaNaveAtacada naveAtacante naveAtacada = modificarDurabilidad ((-) (min (durabilidad naveAtacada)(danioRecibido naveAtacada naveAtacante))) naveAtacada
+saberComoQuedaNaveAtacada naveAtacante naveAtacada = modificarDurabilidad ((-) (min (durabilidad naveAtacada) (danioRecibido naveAtacada naveAtacante))) naveAtacada
 
 danioRecibido :: Nave -> Nave -> Int
 danioRecibido naveAtacante naveAtacada = max (calculoDanio naveAtacante naveAtacada) 0
@@ -87,4 +87,33 @@ naveFueraDeCombate = (== 0) . durabilidad
 
 ------------
 ---Punto5---
+------------
+
+type Estrategia = Nave -> Bool
+
+saberComoQuedaFlotaEnemiga :: Flota -> Nave -> Estrategia -> Flota
+saberComoQuedaFlotaEnemiga = misionSorpresa
+
+misionSorpresa :: Flota -> Nave -> Estrategia -> Flota
+misionSorpresa flotaEnemiga naveAtacante estrategia = map (atacarSiCumplenEstrategia estrategia naveAtacante) flotaEnemiga
+
+atacarSiCumplenEstrategia :: Estrategia -> Nave -> Nave -> Nave
+atacarSiCumplenEstrategia estrategia naveAtacante naveAtacada
+    | estrategia naveAtacada = saberComoQuedaNaveAtacada naveAtacante naveAtacada
+    | otherwise = naveAtacada
+
+navesDebiles :: Estrategia
+navesDebiles = (<200) . escudo
+
+navesConCiertaPeligrosidad :: Int -> Estrategia
+navesConCiertaPeligrosidad valorDado = (>valorDado) . ataque 
+
+navesQueQuedarianFueraDeCombate :: Nave -> Estrategia
+navesQueQuedarianFueraDeCombate naveAtacante = naveFueraDeCombate . (saberComoQuedaNaveAtacada naveAtacante)
+
+navesMuyPeligrosas :: Estrategia
+navesMuyPeligrosas unaNave = (ataque unaNave) > 500 && (escudo unaNave) > 300
+
+------------
+---Punto6---
 ------------
