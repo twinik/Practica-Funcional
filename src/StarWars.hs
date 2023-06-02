@@ -91,9 +91,6 @@ naveFueraDeCombate = (== 0) . durabilidad
 
 type Estrategia = Nave -> Bool
 
-saberComoQuedaFlotaEnemiga :: Flota -> Nave -> Estrategia -> Flota
-saberComoQuedaFlotaEnemiga = misionSorpresa
-
 misionSorpresa :: Flota -> Nave -> Estrategia -> Flota
 misionSorpresa flotaEnemiga naveAtacante estrategia = map (atacarSiCumplenEstrategia estrategia naveAtacante) flotaEnemiga
 
@@ -117,3 +114,21 @@ navesMuyPeligrosas unaNave = (ataque unaNave) > 500 && (escudo unaNave) > 300
 ------------
 ---Punto6---
 ------------
+
+usarMejorEstrategia :: Nave -> Flota -> Estrategia -> Estrategia -> Flota
+usarMejorEstrategia naveAtacante flotaEnemiga estrategia1 estrategia2 = 
+    misionSorpresa flotaEnemiga naveAtacante (mejorEstrategia flotaEnemiga naveAtacante estrategia1 estrategia2)
+
+mejorEstrategia :: Nave -> Flota -> Estrategia -> Estrategia -> Estrategia
+mejorEstrategia naveAtacante flotaEnemiga estrategia1 estrategia2
+    | esMejor estrategia1 estrategia2 = estrategia1
+    | otherwise = estrategia2
+
+esMejor :: Nave -> Flota -> Estrategia -> Estrategia -> Bool
+esMejor naveAtacante flotaEnemiga mejorEstrategia peorEstrategia =
+    (durabilidadTotal (misionSorpresa flotaEnemiga naveAtacante mejorEstrategia)) < (durabilidadTotal (misionSorpresa flotaEnemiga naveAtacante peorEstrategia))
+
+------------
+---Punto7---
+------------
+
