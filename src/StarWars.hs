@@ -117,11 +117,11 @@ navesMuyPeligrosas unaNave = (ataque unaNave) > 500 && (escudo unaNave) > 300
 
 usarMejorEstrategia :: Nave -> Flota -> Estrategia -> Estrategia -> Flota
 usarMejorEstrategia naveAtacante flotaEnemiga estrategia1 estrategia2 = 
-    misionSorpresa flotaEnemiga naveAtacante (mejorEstrategia flotaEnemiga naveAtacante estrategia1 estrategia2)
+    misionSorpresa flotaEnemiga naveAtacante (mejorEstrategia naveAtacante flotaEnemiga estrategia1 estrategia2)
 
 mejorEstrategia :: Nave -> Flota -> Estrategia -> Estrategia -> Estrategia
 mejorEstrategia naveAtacante flotaEnemiga estrategia1 estrategia2
-    | esMejor estrategia1 estrategia2 = estrategia1
+    | esMejor naveAtacante flotaEnemiga estrategia1 estrategia2 = estrategia1
     | otherwise = estrategia2
 
 esMejor :: Nave -> Flota -> Estrategia -> Estrategia -> Bool
