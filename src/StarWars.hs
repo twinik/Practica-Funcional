@@ -88,3 +88,7 @@ activarPoder = poderEspecial unaNave
 
 naveFueraDeCombate :: Nave -> Bool
 naveFueraDeCombate = (== 0) . durabilidad
+
+------------
+---Punto5---
+------------
