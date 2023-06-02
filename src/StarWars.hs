@@ -131,4 +131,6 @@ esMejor naveAtacante flotaEnemiga mejorEstrategia peorEstrategia =
 ------------
 ---Punto7---
 ------------
-
+-- No es posible determinar su durabilidad total ya que se tendria que sumar la durabilidad de infinitas naves, lo cual no terminaria nunca
+-- Cuando se lleva una mision sobre ella, atacaria a todas las naves que cumplan la estrategia pero al ser naves infinitas, nunca devolveria
+-- la flota completamente atacada ya que nunca terminaria
