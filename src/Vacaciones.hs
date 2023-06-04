@@ -82,19 +82,13 @@ deltaExcursionSegun unIndice unTurista unaExcursion =
 
 --C.i
 
-esExcursionEducativa :: Excursion -> Turista -> Bool
-esExcursionEducativa unaExcursion unTurista = 
-    varioDelta (deltaExcursionSegun (length . idiomas) unTurista unaExcursion)
-
-varioDelta :: Int -> Bool
-varioDelta = (>0)
-
+esExcursionEducativa :: Turista -> Excursion -> Bool
+esExcursionEducativa unTurista = (>0) . deltaExcursionSegun (length . idiomas) unTurista
 
 --C.ii
 
 excursionesDesestresantes :: Turista -> [Excursion] -> [Excursion]
-excursionesDesestresantes unTurista todasLasExcursiones = 
-    filter (esDesestresante unTurista) todasLasExcursiones
+excursionesDesestresantes unTurista = filter (esDesestresante unTurista) 
 
 esDesestresante :: Turista -> Excursion -> Bool
 esDesestresante unTurista unaExcursion = 
@@ -132,14 +126,14 @@ existeTourConvincente unTurista listaTours =
     existeTourDesestresante unTurista listaTours && viajaAcompaniadoDespuesDeTourDesestresante (tourDesestresante unTurista listaTours) unTurista
 
 existeTourDesestresante :: Turista -> [Tour] -> Bool 
-existeTourDesestresante unTurista listaTours = length (filter (esTourDesestresante unTurista) listaTours) > 0
+existeTourDesestresante unTurista listaTours = any (esTourDesestresante unTurista) listaTours
 
 esTourDesestresante :: Turista -> Tour -> Bool
 esTourDesestresante unTurista unTour = length (excursionesDesestresantes unTurista unTour) > 0
 
 viajaAcompaniadoDespuesDeTourDesestresante :: Tour -> Turista -> Bool
-viajaAcompaniadoDespuesDeTourDesestresante unTour unTurista =
-    (not . viajaSolo) (hacerTour unTour unTurista)
+viajaAcompaniadoDespuesDeTourDesestresante unTour =
+    not . viajaSolo . hacerTour unTour
 
 tourDesestresante :: Turista -> [Tour] -> Tour
 tourDesestresante unTurista listaTours = head . filter (esTourDesestresante unTurista) $ listaTours
@@ -147,7 +141,7 @@ tourDesestresante unTurista listaTours = head . filter (esTourDesestresante unTu
 --C
 
 efectividadDelTour :: Tour -> [Turista] -> Int
-efectividadDelTour = sum . listaEspiritualidades
+efectividadDelTour unTour = sum . listaEspiritualidades unTour
 
 listaEspiritualidades :: Tour -> [Turista] -> [Int]
 listaEspiritualidades unTour =
@@ -160,3 +154,19 @@ espiritualidadRecibida unTour unTurista =
 deltaTourSegun :: Indice -> Turista -> Tour -> Int
 deltaTourSegun unIndice unTurista unTour = 
     deltaSegun unIndice (hacerTour unTurista unTour) unTurista 
+
+------------
+---Punto4---
+------------
+
+--A
+tourInfinito :: Tour
+tourInfinito = irALaPlaya : repeat irALaPlaya
+
+--B
+--Para Ana sí porque la primer actividad ya es desestresante y siempre está acompañada.
+--Con Beto no se cumple ninguna de las 2 condiciones y el algoritmo diverge.
+
+--C
+{- No existe, ya que para saber la efectividad de un tour hay que completar
+el tour, y en este caso al ser infinito, nunca se completaria -}
