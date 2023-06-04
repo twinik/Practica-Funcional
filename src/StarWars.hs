@@ -67,7 +67,7 @@ durabilidadTotal = sum . map durabilidad
 ------------
 
 saberComoQuedaNaveAtacada :: Nave -> Nave -> Nave
-saberComoQuedaNaveAtacada naveAtacante naveAtacada = modificarDurabilidad ((-) (min (durabilidad naveAtacada) (danioRecibido naveAtacada naveAtacante))) naveAtacada
+saberComoQuedaNaveAtacada naveAtacante naveAtacada = modificarDurabilidad ((-) (min (durabilidad naveAtacada) (danioRecibido naveAtacada naveAtacante)))  (activarPoder naveAtacada)
 
 danioRecibido :: Nave -> Nave -> Int
 danioRecibido naveAtacante naveAtacada = max (calculoDanio naveAtacante naveAtacada) 0
