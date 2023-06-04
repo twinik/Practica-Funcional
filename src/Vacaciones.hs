@@ -92,8 +92,8 @@ varioDelta = (>0)
 
 --C.ii
 
-excrusionesDesestresantes :: Turista -> [Excursion] -> [Excursion]
-excrusionesDesestresantes unTurista todasLasExcursiones = 
+excursionesDesestresantes :: Turista -> [Excursion] -> [Excursion]
+excursionesDesestresantes unTurista todasLasExcursiones = 
     filter (esDesestresante unTurista) todasLasExcursiones
 
 esDesestresante :: Turista -> Excursion -> Bool
@@ -104,4 +104,59 @@ esDesestresante unTurista unaExcursion =
 ---Punto3---
 ------------
 
+type Tour = [Excursion]
 
+completo :: Tour
+completo = [caminar 20, apreciarElementoPaisaje "cascada", caminar 40, salirAHablarUnIdioma "melmacquiano"]
+
+ladoB :: Excursion -> Tour
+ladoB excursionElegida = [paseoEnBarco Tranquila, excursionElegida, caminar 120]
+
+islaVecina :: Marea -> Tour
+islaVecina marea
+    | marea == Fuerte = [paseoEnBarco marea, apreciarElementoPaisaje "lago", paseoEnBarco marea]
+    | otherwise = [paseoEnBarco marea, irALaPlaya, paseoEnBarco marea]
+
+--A
+
+hacerTour :: Tour -> Turista -> Turista
+hacerTour unTour = cambiarStress (+ (length unTour)) . completarExcursiones unTour
+
+completarExcursiones :: Tour -> Turista -> Turista
+completarExcursiones unTour unTurista = foldr ($) unTurista unTour
+
+--B 
+
+existeTourConvincente :: Turista -> [Tour] -> Bool
+existeTourConvincente unTurista listaTours = 
+    existeTourDesestresante unTurista listaTours && viajaAcompaniadoDespuesDeTourDesestresante (tourDesestresante unTurista listaTours) unTurista
+
+existeTourDesestresante :: Turista -> [Tour] -> Bool 
+existeTourDesestresante unTurista listaTours = length (filter (esTourDesestresante unTurista) listaTours) > 0
+
+esTourDesestresante :: Turista -> Tour -> Bool
+esTourDesestresante unTurista unTour = length (excursionesDesestresantes unTurista unTour) > 0
+
+viajaAcompaniadoDespuesDeTourDesestresante :: Tour -> Turista -> Bool
+viajaAcompaniadoDespuesDeTourDesestresante unTour unTurista =
+    (not . viajaSolo) (hacerTour unTour unTurista)
+
+tourDesestresante :: Turista -> [Tour] -> Tour
+tourDesestresante unTurista listaTours = head . filter (esTourDesestresante unTurista) $ listaTours
+
+--C
+
+efectividadDelTour :: Tour -> [Turista] -> Int
+efectividadDelTour = sum . listaEspiritualidades
+
+listaEspiritualidades :: Tour -> [Turista] -> [Int]
+listaEspiritualidades unTour =
+    map espiritualidadRecibida unTour . filter (existeTourConvincente [unTour])
+
+espiritualidadRecibida :: Tour -> Turista -> Int
+espiritualidadRecibida unTour unTurista = 
+    deltaTourSegun stress (hacerTour unTour unTurista) unTour + deltaTourSegun cansancio (hacerTour unTour unTurista) unTour
+
+deltaTourSegun :: Indice -> Turista -> Tour -> Int
+deltaTourSegun unIndice unTurista unTour = 
+    deltaSegun unIndice (hacerTour unTurista unTour) unTurista 
