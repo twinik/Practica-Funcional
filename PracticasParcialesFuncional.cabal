@@ -25,11 +25,11 @@ source-repository head
 
 library
   exposed-modules:
-      Carreras
       Heroes
       Minigolfito
       StarWars
       Thanos
+      Vacaciones
   other-modules:
       Paths_PracticasParcialesFuncional
   hs-source-dirs:
