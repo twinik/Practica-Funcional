@@ -27,6 +27,7 @@ library
   exposed-modules:
       Heroes
       Minigolfito
+      MonsterInc
       StarWars
       Thanos
       Vacaciones
