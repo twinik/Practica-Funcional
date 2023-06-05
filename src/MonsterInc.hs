@@ -11,7 +11,7 @@ mojoLaCama (_,_,m) = m
 energiaDeGrito :: Grito -> Int
 energiaDeGrito unGrito
     | mojoLaCama unGrito = nivelDeTerror unGrito * (intensidad unGrito) ^ 2
-    | otherwise = 3 * nivelDeTerror unGrito + 3
+    | otherwise = 3 * nivelDeTerror unGrito + intensidad unGrito
 
 nivelDeTerror :: Grito -> Int
 nivelDeTerror = length . onomatopeya
