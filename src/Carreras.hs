@@ -15,10 +15,10 @@ estanCerca :: Auto -> Auto -> Bool
 estanCerca auto1 auto2 = 
     sonDistintos auto1 auto2 && distanciaMenorA10 auto1 auto2
 
-sonDistintos :: Auto -> Auto
+sonDistintos :: Auto -> Auto -> Bool
 sonDistintos auto1 auto2 = color auto1 /= color auto2
 
-distanciaMenorA10 :: Auto -> Auto
+distanciaMenorA10 :: Auto -> Auto -> Bool
 distanciaMenorA10 auto1 auto2 = abs (distancia auto1 - distancia auto2) < 10
 
 --B
@@ -42,4 +42,24 @@ vaMejor autoPeor autoMejor = distancia autoMejor > distancia autoPeor
 
 ------------
 ---Punto2---
+------------
+--A
+correrPorDeterminadoTiempo :: Auto -> Int -> Auto
+correrPorDeterminadoTiempo unAuto tiempo = 
+    modificarDistancia (+ (tiempo * velocidad unAuto)) unAuto
+
+modificarDistancia :: (Int -> Int) -> Auto -> Auto
+modificarDistancia funcion unAuto = 
+    unAuto {distancia = funcion . distancia $ unAuto}
+
+--B
+modificarVelocidad :: (Int -> Int) -> Auto -> Auto
+modificarVelocidad funcion unAuto = 
+    unAuto {velocidad = max (funcion . velocidad $ unAuto) 0}
+
+bajarVelocidad :: Int -> Auto -> Auto
+bajarVelocidad cantidad = modificarVelocidad (+ (-cantidad))
+
+------------
+---Punto3---
 ------------
