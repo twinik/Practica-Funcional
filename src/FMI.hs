@@ -57,11 +57,11 @@ establecerBlindaje =
     prestarMitadPBI . cambiarSectorPublico (-500)
 
 prestarMitadPBI :: Pais -> Pais
-prestarMitadPBI unPais = prestarMillones (mitadPBI unPais) unPais
+prestarMitadPBI unPais = prestarMillones (div (pbi unPais) 2) unPais
 
-mitadPBI :: Pais -> Int
-mitadPBI unPais = 
-    div (ingresoPerCapita unPais * (sectorPrivado unPais + sectorPublico unPais)) 2
+pbi :: Pais -> Int
+pbi unPais = 
+    ingresoPerCapita unPais * (sectorPrivado unPais + sectorPublico unPais)
 
 ------------
 ---Punto3---
@@ -92,6 +92,25 @@ puedenZafar =
 totalDeudaAFavor :: [Pais] -> Int
 totalDeudaAFavor = sum . map deuda
 
+--C
+{-
+En el punto A aparecio el concepto de composicion, ya que se compusieron varias 
+funciones para lograr filtar los paises que tienen petroleo en sus recursos y
+aparecio el concepto de aplicacion parcial, ya que se aplicaron las funciones
+parcialmente para poder componerlas
 
+En el punto B se aparecio el concepto de orden superior ya que se uso una funcion que
+se le pasa otra funcion por parametro y el concepto de composicion, ya que se compuso
+la lista de deudas obtenidas con el map, con el sum, el cual suma esa lista
+-}
+
+------------
+---Punto5---
+------------
+estaOrdenado :: Pais -> [Receta] -> Bool
+estaOrdenado pais [receta] = True
+estaOrdenado pais (receta1:receta2:recetas)
+     = revisarPBI receta1 pais <= revisarPBI receta2 pais && estaOrdenado pais (receta2:recetas)
+     where revisarPBI receta = pbi . aplicarReceta receta
 
 
