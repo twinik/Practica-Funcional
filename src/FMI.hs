@@ -12,7 +12,8 @@ data Pais = Pais {
 }
 
 --B
-namibia :: Pais 4140 400000 650000 ["Mineria", "Ecoturismo"] 50
+namibia :: Pais 
+namibia = Pais 4140 400000 650000 ["Mineria", "Ecoturismo"] 50
 
 ------------
 ---Punto2---
@@ -36,7 +37,7 @@ cambiarSectorPublico :: Int -> Pais -> Pais
 cambiarSectorPublico cantidad unPais =
     unPais {sectorPublico = sectorPublico unPais + cantidad }
 
-cambiarIngresoPerCapita :: (Int -> Int) -> Pais -> Pais
+cambiarIngresoPerCapita :: (Float -> Float) -> Pais -> Pais
 cambiarIngresoPerCapita f unPais = 
     unPais {ingresoPerCapita = f (ingresoPerCapita unPais)}
 
